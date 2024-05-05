@@ -59,7 +59,7 @@ $ docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -U sa -P Passw0rd
 
 ### Testing 
 
-After 5mns or so when the RabbitMQ listeners are up, and the node servers have scaled up to 3 then the app is ready to send some user actions. This can be done using the example powershell script from the local machine 
+After a minute or so when everything is up the following API endpoints can be called to demonstrate a working environment:
 
 Healthcheck against the Java web API should return
 ```
