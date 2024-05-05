@@ -1,0 +1,70 @@
+---
+version: '3.4'
+services:
+  web:
+    container_name: web
+    image: local/java-web:0.0.1
+    network_mode: host
+    environment:
+    - HOST=0.0.0.0
+    - PORT=3000
+    - RABBITMQ_HOST=192.168.20.102
+    - RABBITMQ_USERNAME=admin
+    - RABBITMQ_PASSWORD=Passw0rd
+    - RABBITMQ_QUEUE=myqueue
+    - MSSQL_HOST=192.168.20.102
+    - MSSQL_DATABASE=development
+    - MSSQL_USERNAME=sa
+    - MSSQL_PASSWORD=Passw0rd
+    restart: always
+    depends_on: 
+    - rabbitmq
+    - mongo
+    - mssql
+
+  mongo:
+    container_name: mongo
+    image: mongo:4.0-bionic
+    network_mode: host
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=admin
+    - MONGO_INITDB_ROOT_PASSWORD=Passw0rd
+    volumes:
+    - mongo_data:/data/db
+    restart: always
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: bitnami/rabbitmq:latest
+    network_mode: host
+    environment:
+    - RABBITMQ_USERNAME=admin
+    - RABBITMQ_PASSWORD=Passw0rd
+    - RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true
+    volumes:
+    - rabbitmq_data:/bitnami
+    restart: always
+
+  mssql:
+    container_name: mssql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    network_mode: host
+    user: root
+    environment:
+    - ACCEPT_EULA=Y
+    - MSSQL_SA_PASSWORD=Passw0rd
+    volumes:
+    - mssql_data:/var/opt/mssql/data
+    restart: always  
+    # TODO : Must manually create database and configure users
+    # docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -U sa -P Passw0rd
+    # CREATE DATABASE development;
+    # GO
+
+volumes:
+  mongo_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  mssql_data:
+    driver: local
