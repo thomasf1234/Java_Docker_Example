@@ -31,9 +31,11 @@ Next you have to change to the Java_Docker_Example folder
 $ cd /home/vagrant/Java_Docker_Example
 ```
 
-Next we have to build the docker image for the Java web service from the `java/web` directory
+Next we have to build the docker image for the Java web service from the `java/web` directory, then switch directory back to the project root
 ```
+~/Java_Docker_Example$ cd java/web
 ~/Java_Docker_Example/java/web$  docker build --no-cache -t local/java-web:0.0.1 .
+~/Java_Docker_Example/java/web$  cd /home/vagrant/Java_Docker_Example
 ```
 
 Next you have to run docker-compose to bring all the containers up
